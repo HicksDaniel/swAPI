@@ -1,50 +1,23 @@
-export interface FILMObject {
-  title: string;
-  episode_id: number;
-  characters: string[];
-  opening_crawl: string;
-  director: string;
-  producer: string;
-  release_date: string;
-  species: string[];
-  starships: string[];
-  vehicles: string[];
-  url: string;
-  created: string;
-  edited: string;
-}
+import type { FilmsResponse, APIResponses } from "./interfaces.ts";
+import { dynamicRouteFetcher } from "./dynamicRouteFetcher.ts";
 
-const BASE_URL = "https://swapi.dev/api/";
+export async function apiFetch(fetchRequest: string): Promise<APIResponses[]> {
+  const res = await fetch(fetchRequest);
+  const data = (await res.json()) as FilmsResponse;
 
-export default async function apiFetch(): Promise<FILMObject[]> {
-  let dataResults: FILMObject[] = [];
+  const returnedData: APIResponses[] = [];
 
-  const fetchSWAPI = async () => {
-    const res = await fetch(`${BASE_URL}films/`);
-    const data = await res.json();
+  //// Originaly was going to handle multiple calls and a single call ////
 
-    const filmsWithCharacters = await Promise.all(
-      data.results.map(async (film: FILMObject) => {
-        const characterNames = await Promise.all(
-          film.characters.map(async (characterURL: string) => {
-            const res2 = await fetch(characterURL);
-            const characterData = await res2.json();
-            return characterData.name;
-          })
-        );
+  if ("results" in data) {
+    for (const objects of data.results as APIResponses[]) {
+      let results = await dynamicRouteFetcher(objects);
+      returnedData.push(results as APIResponses);
+    }
+  } else {
+    let results = await dynamicRouteFetcher(data as APIResponses);
+    returnedData.push(results as APIResponses);
+  }
 
-        return {
-          ...film,
-          title: film.title,
-          characters: characterNames,
-        };
-      })
-    );
-
-    return filmsWithCharacters;
-  };
-
-  dataResults = await fetchSWAPI();
-
-  return dataResults;
+  return returnedData;
 }

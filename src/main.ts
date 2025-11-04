@@ -2,34 +2,49 @@ import "./style.css";
 import typescriptLogo from "./typescript.svg";
 import viteLogo from "/vite.svg";
 import { setupCounter } from "./counter.ts";
-import apiFetch from "./swFetch.ts";
+import { filmsDisplay, planetsDisplay, characterDisplay } from "./pages/FilmDisplay.ts";
 
 // Fetch and display Star Wars films
 async function displayFilms() {
-  try {
-    const films = await apiFetch();
-    console.log(films);
-    const filmsList = films
-      .map(
-        (film) =>
-          `<div class="film">
-        <h3>${film.title}</h3>
-        <p>Episode ${film.episode_id}</p>
-        <p>Director: ${film.director}</p>
-        <ul>
-          <li>Characters:</li>
-          ${film.characters
-            .map((characterUrl) => `<li>${characterUrl}</li>`)
-            .join("")}
-        </ul>
-      </div>`
-      )
-      .join("");
+  const hideAllSections = () => {
+    document.querySelector<HTMLDivElement>("#films")!.style.display = "none";
+    document.querySelector<HTMLDivElement>("#planets")!.style.display = "none";
+    document.querySelector<HTMLDivElement>("#characters")!.style.display = "none";
+  };
 
-    document.querySelector("#films")!.innerHTML = filmsList;
+  const dynamicDisplay = (category: string = "") => {
+    hideAllSections();
+
+    switch (category) {
+      case "":
+        return;
+      case "films":
+        document.querySelector<HTMLDivElement>("#films")!.style.display = "block";
+        filmsDisplay("films");
+        break;
+      case "characters":
+        document.querySelector<HTMLDivElement>("#characters")!.style.display = "block";
+        characterDisplay("people");
+        break;
+      case "planets":
+        document.querySelector<HTMLDivElement>("#planets")!.style.display = "block";
+        planetsDisplay("planets");
+        break;
+    }
+  };
+
+  const dropdownSelection = document.querySelector<HTMLSelectElement>("#category-dropdown")!;
+
+  try {
+    dropdownSelection.addEventListener("change", (event) => {
+      const selectedCategory = (event.target as HTMLSelectElement).value;
+      dynamicDisplay(selectedCategory);
+    });
   } catch (error) {
-    console.error("Error fetching films:", error);
+    console.error("Error:", error);
   }
+
+  hideAllSections();
 }
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
@@ -44,11 +59,18 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
     <div class="card">
       <button id="counter" type="button"></button>
     </div>
+    <div>Select Category</div>
+    <select id="category-dropdown">
+    <option value="">Select</option>
+    <option value="films">Films</option>
+    <option value="planets">Planets</option>
+    <option value="characters">Characters</option>
+    </select>
+
     <div id="films"></div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
+    <div id="planets"></div>
+    <div id="characters"></div>
+    </div>
 `;
 
 setupCounter(document.querySelector<HTMLButtonElement>("#counter")!);
