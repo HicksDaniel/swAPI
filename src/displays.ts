@@ -12,3 +12,5 @@ export const characterDisplay = (value: string) => {
   populateData(value, "characters", renderCharacters);
 };
 
+
+

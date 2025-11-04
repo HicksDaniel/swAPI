@@ -1,4 +1,4 @@
-import type { FILMObject, PLANETObject, CHARACTERObject } from "../interfaces.ts";
+import type { FILMObject, PLANETObject, CHARACTERObject } from "./interfaces.ts";
 
 export const renderFilms = (film: FILMObject) => {
   return `<div class="film">
@@ -30,4 +30,3 @@ export const renderCharacters = (character: CHARACTERObject) => {
           ${character.films.map((filmName) => `<li>${filmName}</li>`).join("")}
         </ul>`;
 };
-

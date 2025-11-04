@@ -1,5 +1,5 @@
-import { apiFetch } from "../swFetch.ts";
-import type { APIResponses } from "../interfaces.ts";
+import { apiFetch } from "./swFetch.ts";
+import type { APIResponses } from "./interfaces.ts";
 
 const BASE_URL = "https://swapi.dev/api/";
 
@@ -25,4 +25,3 @@ export const populateData = async <T extends APIResponses>(
 
   document.querySelector(`#${elementId}`)!.innerHTML = outputHTML;
 };
-
