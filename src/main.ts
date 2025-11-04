@@ -2,7 +2,7 @@ import "./style.css";
 import typescriptLogo from "./typescript.svg";
 import viteLogo from "/vite.svg";
 import { setupCounter } from "./counter.ts";
-import { filmsDisplay, planetsDisplay, characterDisplay } from "./pages/FilmDisplay.ts";
+import { filmsDisplay, planetsDisplay, characterDisplay } from "./pages/displays.ts";
 
 // Fetch and display Star Wars films
 async function displayFilms() {

@@ -25,6 +25,7 @@ export const CharactersFromPlanet = async (category: PLANETObject) => {
     residents: CharacterData.map((char) => char.name),
   };
 };
+
 export const CharacterData = async (category: CHARACTERObject) => {
   const filmPromises = category.films.map((charUrl: string) => fetch(charUrl));
   const filmResponses = await Promise.all(filmPromises);
