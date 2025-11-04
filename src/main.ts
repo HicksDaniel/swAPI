@@ -1,6 +1,8 @@
 import "./style.css";
 import { displayFilms } from "./handleSections.ts";
 
+let i_needed_to_change_something_to_create_a_pull_requests;
+
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
   <h2> Star Wars</h2>
