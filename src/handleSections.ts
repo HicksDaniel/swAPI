@@ -1,45 +1,33 @@
 import { renderFilms, renderPlanets, renderCharacters } from "./templates.ts";
+import type { selectableCategory } from "./interfaces.ts";
 
 import { populateData } from "./dataService.ts";
 
-export const hideAllSections = () => {
+const hideAllSections = () => {
   document.querySelector<HTMLDivElement>("#films")!.style.display = "none";
   document.querySelector<HTMLDivElement>("#planets")!.style.display = "none";
-  document.querySelector<HTMLDivElement>("#characters")!.style.display = "none";
+  document.querySelector<HTMLDivElement>("#people")!.style.display = "none";
 };
 
-export const selectedDisplay = (category: string = "") => {
-  hideAllSections();
-
-  switch (category) {
-    case "":
-      return;
-    case "films":
-      document.querySelector<HTMLDivElement>(`#${category}`)!.style.display = "block";
-      populateData(category, renderFilms);
-      break;
-    case "characters":
-      document.querySelector<HTMLDivElement>(`#${category}`)!.style.display = "block";
-      populateData(category, renderCharacters);
-      break;
-    case "planets":
-      document.querySelector<HTMLDivElement>(`#${category}`)!.style.display = "block";
-      populateData(category, renderPlanets);
-      break;
-  }
+const displayConfig = {
+  films: renderFilms,
+  people: renderCharacters,
+  planets: renderPlanets,
 };
 
 export async function displayFilms() {
   const dropdownSelection = document.querySelector<HTMLSelectElement>("#category-dropdown")!;
 
+  hideAllSections();
+
   try {
     dropdownSelection.addEventListener("change", (event) => {
-      const selectedCategory = (event.target as HTMLSelectElement).value;
-      selectedDisplay(selectedCategory);
+      const category = (event.target as HTMLSelectElement).value as selectableCategory;
+
+      document.querySelector<HTMLDivElement>(`#${category}`)!.style.display = "block";
+      populateData(category, displayConfig[category]);
     });
   } catch (error) {
     console.error("Error:", error);
   }
-
-  hideAllSections();
 }

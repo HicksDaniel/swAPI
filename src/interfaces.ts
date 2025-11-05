@@ -13,7 +13,6 @@ export interface FILMObject {
   created: string;
   edited: string;
 }
-
 export interface PLANETObject {
   climate: string;
   created: string;
@@ -54,3 +53,5 @@ export type APIResponses = CHARACTERObject | FILMObject | PLANETObject;
 export interface FilmsResponse {
   results?: APIResponses[];
 }
+
+export type selectableCategory = "films" | "people" | "planets";

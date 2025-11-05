@@ -1,17 +1,15 @@
-import { apiFetch } from "./swFetch.ts";
-import type { APIResponses } from "./interfaces.ts";
-
-const BASE_URL = "https://swapi.dev/api/";
+import { fetchHandler } from "./fetchHandler.ts";
+import type { APIResponses, selectableCategory } from "./interfaces.ts";
 
 const fetchCache: { [key: string]: APIResponses[] } = {};
 
-export const populateData = async <T extends APIResponses>(category: string, renderItem: (item: T) => string) => {
-  let data: T[];
+export const populateData = async (category: selectableCategory, renderItem: (item: any) => string) => {
+  let data;
 
   if (fetchCache[category]) {
-    data = fetchCache[category] as T[];
+    data = fetchCache[category];
   } else {
-    data = (await apiFetch(`${BASE_URL}${category}/`)) as T[];
+    data = await fetchHandler(category);
     fetchCache[category] = data;
   }
   const outputHTML = data
