@@ -5,11 +5,7 @@ const BASE_URL = "https://swapi.dev/api/";
 
 const fetchCache: { [key: string]: APIResponses[] } = {};
 
-export const populateData = async <T extends APIResponses>(
-  category: string,
-  elementId: string,
-  renderItem: (item: T) => string
-) => {
+export const populateData = async <T extends APIResponses>(category: string, renderItem: (item: T) => string) => {
   let data: T[];
 
   if (fetchCache[category]) {
@@ -23,5 +19,5 @@ export const populateData = async <T extends APIResponses>(
     .filter((html) => html.trim() !== "")
     .join("");
 
-  document.querySelector(`#${elementId}`)!.innerHTML = outputHTML;
+  document.querySelector(`#${category}`)!.innerHTML = outputHTML;
 };

@@ -1,4 +1,6 @@
-import { filmsDisplay, planetsDisplay, characterDisplay } from "./displays.ts";
+import { renderFilms, renderPlanets, renderCharacters } from "./templates.ts";
+
+import { populateData } from "./dataService.ts";
 
 export const hideAllSections = () => {
   document.querySelector<HTMLDivElement>("#films")!.style.display = "none";
@@ -13,16 +15,16 @@ export const selectedDisplay = (category: string = "") => {
     case "":
       return;
     case "films":
-      document.querySelector<HTMLDivElement>("#films")!.style.display = "block";
-      filmsDisplay("films");
+      document.querySelector<HTMLDivElement>(`#${category}`)!.style.display = "block";
+      populateData(category, renderFilms);
       break;
     case "characters":
-      document.querySelector<HTMLDivElement>("#characters")!.style.display = "block";
-      characterDisplay("people");
+      document.querySelector<HTMLDivElement>(`#${category}`)!.style.display = "block";
+      populateData(category, renderCharacters);
       break;
     case "planets":
-      document.querySelector<HTMLDivElement>("#planets")!.style.display = "block";
-      planetsDisplay("planets");
+      document.querySelector<HTMLDivElement>(`#${category}`)!.style.display = "block";
+      populateData(category, renderPlanets);
       break;
   }
 };

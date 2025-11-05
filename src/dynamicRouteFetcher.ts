@@ -1,4 +1,4 @@
-import type { APIResponses } from "./interfaces.ts";
+import type { APIResponses } from "./interfaces";
 import { CharactersFromFilm, CharactersFromPlanet, CharacterData } from "./fetchRequests.ts";
 
 export const dynamicRouteFetcher = async (category: APIResponses | APIResponses[]) => {
