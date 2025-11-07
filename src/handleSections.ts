@@ -1,13 +1,6 @@
 import { renderFilms, renderPlanets, renderCharacters } from "./templates.ts";
 import type { selectableCategory } from "./interfaces.ts";
-
-import { populateData } from "./dataService.ts";
-
-const hideAllSections = () => {
-  document.querySelector<HTMLDivElement>("#films")!.style.display = "none";
-  document.querySelector<HTMLDivElement>("#planets")!.style.display = "none";
-  document.querySelector<HTMLDivElement>("#people")!.style.display = "none";
-};
+import { fetchHandler } from "./fetchHandler.ts";
 
 const displayConfig = {
   films: renderFilms,
@@ -15,19 +8,16 @@ const displayConfig = {
   planets: renderPlanets,
 };
 
-export async function displayFilms() {
-  const dropdownSelection = document.querySelector<HTMLSelectElement>("#category-dropdown")!;
+export async function displayFilms(category: selectableCategory) {
+  if (!category) return;
 
-  hideAllSections();
+  const data = await fetchHandler(category);
 
-  try {
-    dropdownSelection.addEventListener("change", (event) => {
-      const category = (event.target as HTMLSelectElement).value as selectableCategory;
+  const outputHTML = data
+    .map((item) => displayConfig[category](item as any))
+    .filter((html) => html.trim() !== "")
+    .join("");
 
-      document.querySelector<HTMLDivElement>(`#${category}`)!.style.display = "block";
-      populateData(category, displayConfig[category]);
-    });
-  } catch (error) {
-    console.error("Error:", error);
-  }
+  document.querySelector<HTMLDivElement>(`#${category}`)!.style.display = "block";
+  document.querySelector(`#${category}`)!.innerHTML = outputHTML;
 }

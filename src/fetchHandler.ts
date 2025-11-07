@@ -10,8 +10,14 @@ const routerConfig = {
 
 const BASE_URL = "https://swapi.dev/api/";
 
+const fetchCache: { [key: string]: APIResponses[] } = {};
+
 export async function fetchHandler(category: selectableCategory): Promise<APIResponses[]> {
-  const res = await fetch(`${BASE_URL}${category}`);
+  if (fetchCache[category]) {
+    return fetchCache[category];
+  }
+
+  const res = await fetch(`${BASE_URL}${category}/`);
   const data = await res.json();
 
   const returnedData = [];
@@ -21,5 +27,6 @@ export async function fetchHandler(category: selectableCategory): Promise<APIRes
     returnedData.push(results);
   }
 
+  fetchCache[category] = returnedData;
   return returnedData;
 }

@@ -1,5 +1,6 @@
 import "./style.css";
 import { displayFilms } from "./handleSections.ts";
+import type { selectableCategory } from "./interfaces.ts";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
@@ -20,4 +21,12 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
     </div>
 `;
 
-displayFilms();
+const dropdownSelection = document.querySelector<HTMLSelectElement>("#category-dropdown")!;
+
+dropdownSelection.addEventListener("change", (event) => {
+  const category = (event.target as HTMLSelectElement).value as selectableCategory;
+  document.querySelector<HTMLDivElement>("#films")!.style.display = "none";
+  document.querySelector<HTMLDivElement>("#planets")!.style.display = "none";
+  document.querySelector<HTMLDivElement>("#people")!.style.display = "none";
+  displayFilms(category);
+});
