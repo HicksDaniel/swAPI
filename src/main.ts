@@ -1,5 +1,5 @@
 import "./style.css";
-import { displayFilms } from "./handleSections.ts";
+import { handleSections } from "./handleSections.ts";
 import type { selectableCategory } from "./interfaces.ts";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
@@ -28,5 +28,5 @@ dropdownSelection.addEventListener("change", (event) => {
   document.querySelector<HTMLDivElement>("#films")!.style.display = "none";
   document.querySelector<HTMLDivElement>("#planets")!.style.display = "none";
   document.querySelector<HTMLDivElement>("#people")!.style.display = "none";
-  displayFilms(category);
+  handleSections(category);
 });

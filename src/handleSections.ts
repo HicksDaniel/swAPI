@@ -8,8 +8,10 @@ const displayConfig = {
   planets: renderPlanets,
 };
 
-export async function displayFilms(category: selectableCategory) {
-  if (!category) return;
+export async function handleSections(category: selectableCategory) {
+  const categoryDiv = document.querySelector<HTMLDivElement>(`#${category}`);
+
+  if (!categoryDiv) return;
 
   const data = await fetchHandler(category);
 
@@ -18,6 +20,6 @@ export async function displayFilms(category: selectableCategory) {
     .filter((html) => html.trim() !== "")
     .join("");
 
-  document.querySelector<HTMLDivElement>(`#${category}`)!.style.display = "block";
-  document.querySelector(`#${category}`)!.innerHTML = outputHTML;
+  categoryDiv.style.display = "block";
+  categoryDiv.innerHTML = outputHTML;
 }

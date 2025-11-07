@@ -1,6 +1,7 @@
 import type { CHARACTERObject, FILMObject, PLANETObject } from "./interfaces.ts";
 
 export const CharactersFromFilm = async (category: FILMObject) => {
+  console.log("charactersFromFilm", category);
   const characterPromises = category.characters.map((charUrl: string) => fetch(charUrl));
   const characterResponses = await Promise.all(characterPromises);
 
@@ -14,6 +15,7 @@ export const CharactersFromFilm = async (category: FILMObject) => {
 };
 
 export const CharactersFromPlanet = async (category: PLANETObject) => {
+  console.log("charactersFromPlanet", category);
   const characterPromises = category.residents.map((charUrl: string) => fetch(charUrl));
   const characterResponses = await Promise.all(characterPromises);
 
@@ -27,6 +29,7 @@ export const CharactersFromPlanet = async (category: PLANETObject) => {
 };
 
 export const CharacterData = async (category: CHARACTERObject) => {
+  console.log("characterData", category);
   const filmPromises = category.films.map((filmUrl: string) => fetch(filmUrl));
   const filmResponses = await Promise.all(filmPromises);
 
