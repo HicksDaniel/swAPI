@@ -7,7 +7,20 @@
     <title>my-app</title>
   </head>
   <body>
-    <div id="app"></div>
+  <div>
+    <h2> Star Wars</h2>
+    <h5> Dun dun dun dun dun-dun dun dun-dun</h5>
+    <div>Select Category</div>
+
+    <select id="category-dropdown">
+      <option value="" disabled selected>— Please select an option —</option>
+      <option value="films">Films</option>
+      <option value="planets">Planets</option>
+      <option value="people">Characters</option>
+    </select>
+
+    <div id="content"></div>
+  </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

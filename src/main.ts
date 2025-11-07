@@ -1,32 +1,28 @@
 import "./style.css";
-import { handleSections } from "./handleSections.ts";
-import type { selectableCategory } from "./interfaces.ts";
 
-document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-  <div>
-  <h2> Star Wars</h2>
-  <h5> Dun dun dun dun dun-dun dun dun-dun</h5>
-     <div>Select Category</div>
-    
-    <select id="category-dropdown">
-    <option value="" disabled selected>— Please select an option —</option>
-    <option value="films">Films</option>
-    <option value="planets">Planets</option>
-    <option value="people">Characters</option>
-    </select>
-
-    <div id="films"></div>
-    <div id="planets"></div>
-    <div id="people"></div>
-    </div>
-`;
+import {renderFilms} from "./films/film-renderer.ts";
+import {renderPlanets} from "./planets/planet-renderer.ts";
+import {characterRender} from "./characters/character-renderer.ts";
 
 const dropdownSelection = document.querySelector<HTMLSelectElement>("#category-dropdown")!;
+const contentSection = document.querySelector<HTMLDivElement>("#content")!;
 
-dropdownSelection.addEventListener("change", (event) => {
-  const category = (event.target as HTMLSelectElement).value as selectableCategory;
-  document.querySelector<HTMLDivElement>("#films")!.style.display = "none";
-  document.querySelector<HTMLDivElement>("#planets")!.style.display = "none";
-  document.querySelector<HTMLDivElement>("#people")!.style.display = "none";
-  handleSections(category);
+dropdownSelection.addEventListener("change", async (event) => {
+  const category = (event.target as HTMLSelectElement).value;
+  contentSection.innerHTML = '';
+
+  switch (category) {
+    case "films":
+      const filmHtml = await renderFilms();
+      contentSection.innerHTML = filmHtml;
+      break;
+    case "planets":
+      const planetHtml = await renderPlanets();
+      contentSection.innerHTML = planetHtml;
+      break;
+    case "people":
+      const characterHtml = await characterRender();
+      contentSection.innerHTML = characterHtml;
+      break;
+  }
 });
